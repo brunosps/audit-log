@@ -21,4 +21,4 @@ import { MinhaTabela } from 'src/entities/minha-tabela.model';
     }),
   ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

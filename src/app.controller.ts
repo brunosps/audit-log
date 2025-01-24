@@ -1,7 +1,17 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { AppService } from './app.service';
 import { MinhaTabela } from './entities/minha-tabela.model';
+import { RestExampleService } from './rest-example.service';
+import { SoapExampleService } from './soap-example.service';
 
 export class CreateUserDto {
   name: string;
@@ -14,21 +24,51 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     @InjectModel(MinhaTabela)
-    private readonly minhaTabela: typeof MinhaTabela) { }
+    private readonly minhaTabela: typeof MinhaTabela,
+    private readonly restExampleService: RestExampleService,
+    private readonly soapExampleService: SoapExampleService,
+  ) { }
 
   @Post('users')
   async createUser(@Body() createUserDto: CreateUserDto) {
-
     return {
       message: 'User created successfully',
       user: createUserDto,
     };
   }
 
+  @Get('/post')
+  async getPos(): Promise<string> {
+    return this.restExampleService.getPost();
+  }
+
+  @Get('/post/:id')
+  async getPostById(@Param('id') id: number): Promise<string> {
+    return this.restExampleService.getPostById(id);
+  }
+
+  @Post('/soap/')
+  async calculate(@Body() {
+    from,
+    to,
+    amount
+  }: {
+    from: string,
+    to: string,
+    amount: number
+  }) {
+    console.log('from:', from);
+    console.log('to:', to);
+    console.log('amount:', amount);
+    const result = await this.soapExampleService.convertCurrency(from, to, amount);
+
+    console.log('result:', result);
+    return `Rate: ${result.rate}, Converted Amount: ${result.convertedAmount}`;
+  }
+
   @Get()
   async getHello(): Promise<string> {
     try {
-
       const novoRegistro = await this.minhaTabela.create({
         com_id_lote: 12345,
         pes_migrado: true,
@@ -36,8 +76,8 @@ export class AppController {
         data: new Date('2024-11-05'),
         dataInicio: new Date('2024-11-01T08:00:00Z'),
         dataFim: new Date('2024-11-30T17:00:00Z'),
-        primeiraParcela: 500.00,
-        ultimaParcela: 1000.00,
+        primeiraParcela: 500.0,
+        ultimaParcela: 1000.0,
         tipo: 'CONSORCIO',
         status: 'ATIVO',
         codigoUnidadeNegocio: 10,
@@ -58,11 +98,13 @@ export class AppController {
   }
 
   @Get('/divisao/:number1/:number2')
-  async divisao(@Param('number1') number1: number, @Param('number2') number2: number) {
-
+  async divisao(
+    @Param('number1') number1: number,
+    @Param('number2') number2: number,
+  ) {
     if (number2 == 0) {
       // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-      throw new Error('O divisor não pode ser zero')
+      throw new Error('O divisor não pode ser zero');
     }
 
     return { divisao: number1 / number2 };

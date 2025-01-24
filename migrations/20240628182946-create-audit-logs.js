@@ -11,7 +11,7 @@ module.exports = {
       },
       log_type: {
         type: Sequelize.DataTypes.ENUM,
-        values: ['ENTITY', 'REQUEST', 'ERROR', 'EVENT', 'LOGIN'],
+        values: ['ENTITY', 'REQUEST', 'ERROR', 'EVENT', 'LOGIN', 'INTEGRATION'],
         allowNull: false,
       },
       ip_address: {

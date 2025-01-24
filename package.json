@@ -22,17 +22,20 @@
     "db:migrate:undo": "sequelize db:migrate:undo"
   },
   "dependencies": {
+    "@nestjs/axios": "^4.0.0",
     "@nestjs/common": "^8.4.7",
     "@nestjs/config": "^1.2.1",
     "@nestjs/core": "^8.4.7",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/sequelize": "^8.0.1",
+    "@types/soap": "^0.21.0",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "soap": "^1.1.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

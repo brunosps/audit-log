@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { AuditLog } from './audit-log/model/audit-log.model';
-import { AuditService } from './audit-log/audit.service';
+import { AuditLogEventService } from './audit-log/audit-log-event/services/audit-log-event.service';
+
+
 
 @Injectable()
 export class AppService {
-
-  constructor(private readonly auditLogService: AuditService) { }
+  constructor(private readonly auditEventLogService: AuditLogEventService) { }
   getHello(): string {
-    this.auditLogService.logEvent('GET_HELLO', 'Retornou Hello');
-    this.auditLogService.logEvent('GET_HELLO', 'Retornou Hello', {
+    this.auditEventLogService.logEvent('GET_HELLO', 'Retornou Hello');
+    this.auditEventLogService.logEvent('GET_HELLO', 'Retornou Hello', {
       userId: '12345',
       ip: '192.168.0.1',
       details: {
