@@ -12,7 +12,7 @@ import {
   tableName: 'audit_logs',
   timestamps: false,
 })
-export class AuditLog extends Model<AuditLog> {
+export class AuditLogModel extends Model<AuditLogModel> {
   @PrimaryKey
   @Column({
     type: DataType.UUID,

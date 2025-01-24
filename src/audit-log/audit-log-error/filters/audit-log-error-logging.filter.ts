@@ -10,16 +10,16 @@ import { Request, Response } from 'express';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { v4 as uuidv4 } from 'uuid';
-import { AuditLog } from '../../audit-log-model/audit-log.model';
-import { AuditLogError } from '../../audit-log-model/audit-log-error.model';
+import { AuditLogModel } from '../../audit-log-model/audit-log.model';
+import { AuditLogErrorModel } from '../../audit-log-model/audit-log-error.model';
 
 @Injectable()
 @Catch()
 export class AuditLogErrorLoggingFilter implements ExceptionFilter {
   constructor(
-    @InjectModel(AuditLog) private readonly auditLogModel: typeof AuditLog,
-    @InjectModel(AuditLogError)
-    private readonly auditLogErrorModel: typeof AuditLogError,
+    @InjectModel(AuditLogModel) private readonly auditLogModel: typeof AuditLogModel,
+    @InjectModel(AuditLogErrorModel)
+    private readonly auditLogErrorModel: typeof AuditLogErrorModel,
   ) { }
 
   async catch(exception: unknown, host: ArgumentsHost) {

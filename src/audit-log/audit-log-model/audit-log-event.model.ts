@@ -8,14 +8,14 @@ import {
   Default,
   CreatedAt,
 } from 'sequelize-typescript';
-import { AuditLog } from './audit-log.model';
+import { AuditLogModel } from './audit-log.model';
 
 @Table({
   tableName: 'audit_logs_event',
   timestamps: false,
 })
-export class AuditLogEvent extends Model<AuditLogEvent> {
-  @ForeignKey(() => AuditLog)
+export class AuditLogEventModel extends Model<AuditLogEventModel> {
+  @ForeignKey(() => AuditLogModel)
   @Column({
     type: DataType.UUID,
     allowNull: false,

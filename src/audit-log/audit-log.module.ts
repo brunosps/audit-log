@@ -23,10 +23,27 @@ type AuditLogModuleOptions = {
 export class AuditLogModule {
   static forRoot(config: AuditLogModuleOptions): DynamicModule {
     const imports = [];
+    const exports = [];
     const auditedTables = config.auditedTables ?? [];
+
+    if (auditedTables.length > 0) {
+      imports.push(
+        AuditLogDatabaseModule.forRoot({
+          auditedTables,
+        }),
+      );
+    }
 
     if (config.enableErrorLogging) {
       imports.push(AuditLogErrorModule.forRoot({ modelModule: AuditLogModelModule }));
+    }
+
+    if (config.enableIntegrationLogging) {
+      imports.push(
+        AuditLogIntegrationModule.forRoot({ modelModule: AuditLogModelModule })
+      );
+
+      exports.push(AuditLogIntegrationModule);
     }
 
     if (config.enableRequestLogging) {
@@ -38,27 +55,13 @@ export class AuditLogModule {
       );
     }
 
-    if (auditedTables.length > 0) {
-      imports.push(
-        AuditLogDatabaseModule.forRoot({
-          auditedTables,
-        }),
-      );
-    }
-
-    if (config.enableIntegrationLogging) {
-      imports.push(
-        AuditLogIntegrationModule.forRoot({ modelModule: AuditLogModelModule })
-      );
-    }
-
     return {
       module: AuditLogModule,
       imports: [
         AuditLogEventModule.forRoot({ modelModule: AuditLogModelModule }),
         ...imports
       ],
-      exports: [AuditLogEventModule, AuditLogIntegrationModule],
+      exports: [AuditLogEventModule, ...exports],
       providers: [],
     };
   }

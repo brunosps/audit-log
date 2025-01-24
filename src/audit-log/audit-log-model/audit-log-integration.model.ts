@@ -1,9 +1,9 @@
 import { Model, Table, Column, DataType, ForeignKey, PrimaryKey, CreatedAt, Default } from 'sequelize-typescript';
-import { AuditLog } from './audit-log.model';
+import { AuditLogModel } from './audit-log.model';
 
 @Table({ tableName: 'audit_logs_integration', timestamps: false })
-export class AuditLogIntegration extends Model {
-  @ForeignKey(() => AuditLog)
+export class AuditLogIntegrationModel extends Model<AuditLogIntegrationModel> {
+  @ForeignKey(() => AuditLogModel)
   @Column({
     type: DataType.UUID,
     allowNull: false,

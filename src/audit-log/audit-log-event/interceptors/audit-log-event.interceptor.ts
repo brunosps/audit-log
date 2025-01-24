@@ -5,45 +5,40 @@ import { Reflector } from '@nestjs/core';
 import { AuditLogEventService } from '../services/audit-log-event.service';
 import { AuditLogEventOptions, AUDIT_EVENT_KEY } from '../decorators/audit-log-event.decorator';
 
-
 @Injectable()
 export class AuditLogEventInterceptor implements NestInterceptor {
   constructor(
     private reflector: Reflector,
-    private auditService: AuditLogEventService
+    private auditService: AuditLogEventService,
   ) { }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const auditEventOptions = this.reflector.get<AuditLogEventOptions>(
-      AUDIT_EVENT_KEY,
-      context.getHandler()
-    );
+    const auditEventOptions = this.reflector.get<AuditLogEventOptions>(AUDIT_EVENT_KEY, context.getHandler())
 
     if (!auditEventOptions) {
-      return next.handle();
+      return next.handle()
     }
 
-    const request = context.switchToHttp().getRequest();
-    const userId = request.user?.id || '_';
-    const ip = request.ip || '0.0.0.0';
-    const methodArgs = context.getArgs();
+    const request = context.switchToHttp().getRequest()
+    const userId = request.user?.id || "_"
+    const ip = request.ip || "0.0.0.0"
+    const methodArgs = context.getArgs()
 
     return next.handle().pipe(
       tap(async (result) => {
-        await this.auditService.logEvent(
-          auditEventOptions.eventType,
-          auditEventOptions.eventDescription,
-          {
-            userId,
-            ip,
-            details: {
-              params: methodArgs,
-              result: result
-            }
-          }
-        );
-      })
-    );
+        const details = auditEventOptions.getDetails
+          ? auditEventOptions.getDetails(methodArgs, result)
+          : { params: methodArgs, result: result }
+
+        await this.auditService.logEvent({
+          type: auditEventOptions.eventType,
+          description: auditEventOptions.eventDescription,
+          userId,
+          userIp: ip,
+          details: { details },
+        })
+      }),
+    )
   }
 }
 

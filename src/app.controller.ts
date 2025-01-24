@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { AppService } from './app.service';
+import { AuditLogEvent } from './audit-log/audit-log-event/decorators/audit-log-event.decorator';
 import { MinhaTabela } from './entities/minha-tabela.model';
 import { RestExampleService } from './rest-example.service';
 import { SoapExampleService } from './soap-example.service';
@@ -30,6 +31,15 @@ export class AppController {
   ) { }
 
   @Post('users')
+  @AuditLogEvent({
+    eventType: "CREATE_USERS",
+    eventDescription: "Fetching all users",
+    getDetails: (args, result) => {
+      console.log('args:', args);
+      console.log('result:', result);
+      return { "users": result };
+    },
+  })
   async createUser(@Body() createUserDto: CreateUserDto) {
     return {
       message: 'User created successfully',
@@ -38,7 +48,15 @@ export class AppController {
   }
 
   @Get('/post')
-  async getPos(): Promise<string> {
+  @AuditLogEvent({
+    eventType: "GET_POSTS",
+    eventDescription: "Fetching all posts",
+    getDetails: (args, result) => ({
+      numberOfPosts: result.length,
+      firstPostTitle: result[0]?.title,
+    }),
+  })
+  async getPost(): Promise<string> {
     return this.restExampleService.getPost();
   }
 

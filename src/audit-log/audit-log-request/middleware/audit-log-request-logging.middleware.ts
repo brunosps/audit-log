@@ -1,17 +1,17 @@
 import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { InjectModel } from '@nestjs/sequelize';
-import { AuditLog } from '../../audit-log-model/audit-log.model';
-import { AuditLogRequest } from '../../audit-log-model/audit-log-request.model';
+import { AuditLogModel } from '../../audit-log-model/audit-log.model';
+import { AuditLogRequestModel } from '../../audit-log-model/audit-log-request.model';
 import { sanitizePayload } from '../utils/sanitizePayload';
 import { AuditRequestModuleOptions } from '../audit-log-request.module';
 
 @Injectable()
 export class AuditLogRequestLoggingMiddleware implements NestMiddleware {
   constructor(
-    @InjectModel(AuditLog) private auditLogModel: typeof AuditLog,
-    @InjectModel(AuditLogRequest)
-    private auditLogRequestModel: typeof AuditLogRequest,
+    @InjectModel(AuditLogModel) private auditLogModel: typeof AuditLogModel,
+    @InjectModel(AuditLogRequestModel)
+    private auditLogRequestModel: typeof AuditLogRequestModel,
     @Inject('AUTH_ROUTE') private authRoute: AuditRequestModuleOptions,
   ) { }
 

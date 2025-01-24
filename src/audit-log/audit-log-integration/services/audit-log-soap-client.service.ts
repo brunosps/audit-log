@@ -3,16 +3,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import { createClientAsync, Client } from 'soap';
 import { v4 as uuidv4 } from 'uuid';
 import { InjectModel } from '@nestjs/sequelize';
-import { AuditLog } from '../../audit-log-model/audit-log.model';
-import { AuditLogIntegration } from '../../audit-log-model/audit-log-integration.model';
+import { AuditLogModel } from '../../audit-log-model/audit-log.model';
+import { AuditLogIntegrationModel } from '../../audit-log-model/audit-log-integration.model';
 
 @Injectable()
 export class AuditLogSoapClientService {
 
     constructor(
-        @InjectModel(AuditLog) private readonly auditLogModel: typeof AuditLog,
-        @InjectModel(AuditLogIntegration)
-        private readonly auditLogIntegrationModel: typeof AuditLogIntegration,
+        @InjectModel(AuditLogModel) private readonly auditLogModel: typeof AuditLogModel,
+        @InjectModel(AuditLogIntegrationModel)
+        private readonly auditLogIntegrationModel: typeof AuditLogIntegrationModel,
     ) { }
 
     async createClient(wsdl: string, integrationName: string): Promise<Client> {
