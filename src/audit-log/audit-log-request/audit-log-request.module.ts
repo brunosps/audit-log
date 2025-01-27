@@ -1,6 +1,6 @@
 import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common';
 import { AuditLogModelModule } from '../audit-log-model/audit-log-model.module';
-import { AuditLogRequestLoggingMiddleware } from './middleware/audit-log-request-logging.middleware';
+import { AuditLogRequestLoggingMiddleware } from './middlewares/audit-log-request-logging.middleware';
 
 export type AuditRequestModuleOptions = {
   path: string;

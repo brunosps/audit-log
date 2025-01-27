@@ -32,10 +32,37 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: root
       DB_DATABASE: test
+      ARCHIVE_DB_HOST: archive_db
+      ARCHIVE_DB_PORT: 5432
+      ARCHIVE_DB_USERNAME: postgres
+      ARCHIVE_DB_PASSWORD: postgres
     depends_on:
       - db
+      - archive_db
     volumes:
       - ./src:/app/src
 
+  archive_db:
+    image: postgres:13
+    environment:
+      # POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      # POSTGRES_DB: archive
+    ports:
+      - "5432:5432"
+    volumes:
+      - archive-db-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - archive_db
+
 volumes:
   db-data:
+  archive-db-data:

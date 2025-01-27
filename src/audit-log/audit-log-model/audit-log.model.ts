@@ -22,7 +22,7 @@ export class AuditLogModel extends Model<AuditLogModel> {
   id!: string;
 
   @Column({
-    type: DataType.ENUM('ENTITY', 'REQUEST', 'ERROR', 'EVENT', 'LOGIN'),
+    type: DataType.ENUM('ENTITY', 'REQUEST', 'ERROR', 'EVENT', 'LOGIN', 'INTEGRATION'),
     allowNull: false,
     field: 'log_type',
   })

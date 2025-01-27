@@ -6,7 +6,7 @@ import { AuditLogErrorModule } from './audit-log-error/audit-log-error.module';
 import { AuditLogModelModule } from './audit-log-model/audit-log-model.module';
 import { AuditLogEventModule } from './audit-log-event/audit-log-event.module';
 import { AuditLogIntegrationModule } from './audit-log-integration/audit-log-integration.module';
-
+import { AuditLogArchiveConfig, AuditLogArchiveModule } from './audit-log-archive/audit-log-archive.module';
 
 type AuditLogModuleOptions = {
   enableErrorLogging?: boolean;
@@ -17,6 +17,7 @@ type AuditLogModuleOptions = {
     path: string;
     methods: Array<string>;
   };
+  enableArchive?: false | AuditLogArchiveConfig;
 };
 
 @Module({})
@@ -25,6 +26,10 @@ export class AuditLogModule {
     const imports = [];
     const exports = [];
     const auditedTables = config.auditedTables ?? [];
+
+    if (config.enableArchive) {
+      imports.push(AuditLogArchiveModule.forRoot(config.enableArchive));
+    }
 
     if (auditedTables.length > 0) {
       imports.push(

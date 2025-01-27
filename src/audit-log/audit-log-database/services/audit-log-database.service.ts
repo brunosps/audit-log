@@ -24,9 +24,9 @@ export class AuditLogDatabaseService {
       try {
         await this.enable(table);
       } catch (error) {
-        console.log('\n\nAuditService ERROR');
-        console.log(error);
-        console.log('\n\n');
+        console.error('\n\nAuditService ERROR');
+        console.error(error);
+        console.error('\n\n');
       }
     });
   }
@@ -102,7 +102,7 @@ export class AuditLogDatabaseService {
     try {
       await this.sequelize.query(sqlCmd.replace(/\n/g, ''), { raw: true });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

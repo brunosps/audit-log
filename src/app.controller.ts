@@ -35,8 +35,6 @@ export class AppController {
     eventType: "CREATE_USERS",
     eventDescription: "Fetching all users",
     getDetails: (args, result) => {
-      console.log('args:', args);
-      console.log('result:', result);
       return { "users": result };
     },
   })
@@ -75,12 +73,7 @@ export class AppController {
     to: string,
     amount: number
   }) {
-    console.log('from:', from);
-    console.log('to:', to);
-    console.log('amount:', amount);
     const result = await this.soapExampleService.convertCurrency(from, to, amount);
-
-    console.log('result:', result);
     return `Rate: ${result.rate}, Converted Amount: ${result.convertedAmount}`;
   }
 
@@ -106,8 +99,6 @@ export class AppController {
         nome: 'Nome Completo do Cliente',
         sincronizado: 0,
       });
-
-      console.log('Registro criado com sucesso:', novoRegistro);
     } catch (error) {
       console.error('Erro ao criar o registro:', error);
     }

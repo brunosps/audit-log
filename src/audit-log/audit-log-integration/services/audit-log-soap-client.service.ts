@@ -16,17 +16,13 @@ export class AuditLogSoapClientService {
     ) { }
 
     async createClient(wsdl: string, integrationName: string): Promise<Client> {
-        console.log('Creating SOAP client for:', wsdl);
         const client = await createClientAsync(wsdl);
-        console.log('SOAP client created for:', wsdl);
 
         client.on('request', async (xml: string, method: string) => {
             const startTime = Date.now();
-            console.log('Request:', xml);
 
             client.on('response', async (responseXml: string, method: string) => {
                 const duration = Date.now() - startTime;
-                console.log('Response:', responseXml);
                 await this.saveLog({
                     integrationName,
                     method,

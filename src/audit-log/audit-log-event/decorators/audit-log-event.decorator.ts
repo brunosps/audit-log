@@ -1,5 +1,4 @@
 import { SetMetadata } from "@nestjs/common"
-import { AUDIT_LOG_SERVICE } from "../audit-log-event-constant"
 
 export const AUDIT_EVENT_KEY = "audit_log_event"
 
@@ -19,11 +18,9 @@ export function AuditLogEvent(options: AuditLogEventOptions) {
 
       const isController = Reflect.getMetadata("__isController__", target.constructor) !== undefined
 
-      console.log("isController", isController);
-
       if (!isController) {
         try {
-          const auditLogEventService = (global as any)[AUDIT_LOG_SERVICE]
+          const auditLogEventService = (global as any)["AUDIT_LOG_SERVICE"]
           if (auditLogEventService) {
             const details = options.getDetails ? options.getDetails(args, result) : { params: args, result: result }
 

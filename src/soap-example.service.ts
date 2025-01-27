@@ -10,8 +10,6 @@ export class SoapExampleService {
         const wsdl = 'http://currencyconverter.kowabunga.net/converter.asmx?WSDL';
         const client = await this.soapClientService.createClient(wsdl, 'CurrencyConverter');
 
-        console.log(client);
-
 
         const result = await client['ConversionRateAsync']({
             FromCurrency: fromCurrency,

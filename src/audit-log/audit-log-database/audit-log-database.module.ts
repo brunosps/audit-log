@@ -1,6 +1,6 @@
 import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common';
-import { AuditLogUserSessionMiddleware } from './middleware/audit-log-user-session.middleware';
-import { AuditLogDatabaseService } from './service/audit-log-database.service';
+import { AuditLogUserSessionMiddleware } from './middlewares/audit-log-user-session.middleware';
+import { AuditLogDatabaseService } from './services/audit-log-database.service';
 
 type AuditDatabaseModuleOptions = {
   auditedTables: Array<string>;
